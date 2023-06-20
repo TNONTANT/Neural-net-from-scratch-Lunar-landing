@@ -11,15 +11,15 @@ This project builds a neural network model from scratch to make autonomous gamep
 - LearningRate: funtion to find the best learning rate.
 - Momentum: function to find the best momentum.
 
-implement_train_test.py
+`implement_train_test.py`
 - this function will train model and get best parameter for the model (save weight to w_hid.csv, w_out.csv)
 - w_hid.csv: contain weight of hidden layer
 - w_out.csv: contain weight of output layer
 
-NeuralNetHolder.py
+`NeuralNetHolder.py`
 - Foward propergation, this file will work with others game logic file in gamecode repo to make game play automatically.
 
-all graph figure of this project are in individual_presentation.pdf
+all graph figure of this project are in `individual_presentation.pdf`
 
 Result below
 
