@@ -3,7 +3,7 @@ This project builds a neural network model from scratch to make autonomous gamep
 
 ** note: This project not allow to use pandas or numpy to create the algorithm but can be use to mangange the file
 
-util.py Contain all function that use to find the best parameter of NeuralNetwork model including
+`util.py` Contain all function that use to find the best parameter of NeuralNetwork model including
 - pre_processing: to preprocess the data
 - NeuralNetwork: to do feedforward and back propergation
 - TestNeural: to test performance finding best parameter (avoid over fitting)
