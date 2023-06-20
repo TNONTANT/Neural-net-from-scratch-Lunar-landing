@@ -5,30 +5,30 @@ import math
 #######this file containing find ht ebest parameter including train and test data##############
 ###############################Preprocessing Data#################################
 
-# input data
-df = pd.read_csv("ce889_dataCollection.csv",header=None)
+def pre_processing(df):
+    # re columns name
+    df.rename(columns={0:'pos_x',1:'pos_y',2:'vel_y',3:'vel_x'},inplace=True)
+    # normalized data
+    normalized_df=(df-df.min())/(df.max()-df.min())
+    # data input x1
+    lenght = normalized_df["pos_x"].values.tolist()
 
-df.rename(columns={0:'pos_x',1:'pos_y',2:'vel_y',3:'vel_x'},inplace=True)
+    # Partitioning Data to 70% for Training and 30% for Testing
+    break_point = int(len(lenght)*0.7)
 
-# normalized data
-normalized_df=(df-df.min())/(df.max()-df.min())
+    # training set
+    input_node1_list = normalized_df["pos_x"].values.tolist()[:break_point]
+    input_node2_list = normalized_df["pos_y"].values.tolist()[:break_point]
+    actual_output_node1_list = normalized_df["vel_x"].values.tolist()[:break_point]
+    actual_output_node2_list = normalized_df["vel_y"].values.tolist()[:break_point]
+    # testing set
+    test_input_node1_list = normalized_df["pos_x"].values.tolist()[break_point:]
+    test_input_node2_list = normalized_df["pos_y"].values.tolist()[break_point:]
+    test_actual_output_node1_list = normalized_df["vel_x"].values.tolist()[break_point:]
+    test_actual_output_node2_list = normalized_df["vel_y"].values.tolist()[break_point:]
 
-# data input x1
-lenght = normalized_df["pos_x"].values.tolist()
+    return input_node1_list, input_node2_list, actual_output_node1_list, actual_output_node2_list, test_input_node1_list, test_input_node2_list, test_actual_output_node1_list, test_actual_output_node2_list
 
-# Partitioning Data to 70% for Training and 30% for Testing
-break_point = int(len(lenght)*0.7)
-
-# training set
-input_node1_list = normalized_df["pos_x"].values.tolist()[:break_point]
-input_node2_list = normalized_df["pos_y"].values.tolist()[:break_point]
-actual_output_node1_list = normalized_df["vel_x"].values.tolist()[:break_point]
-actual_output_node2_list = normalized_df["vel_y"].values.tolist()[:break_point]
-# testing set
-test_input_node1_list = normalized_df["pos_x"].values.tolist()[break_point:]
-test_input_node2_list = normalized_df["pos_y"].values.tolist()[break_point:]
-test_actual_output_node1_list = normalized_df["vel_x"].values.tolist()[break_point:]
-test_actual_output_node2_list = normalized_df["vel_y"].values.tolist()[break_point:]
 
 ###############################Function###########################################
 
@@ -229,7 +229,18 @@ def TestNeural(epoch, lr, mt, node, inNode1_li, inNode2_li, actNode1_li, actNode
 ###############################Find Best Parameter################################# 
 
 # Node function for finding fit Node (fit number of network)
-def Node(epoch,nodes):
+def Node(epoch,nodes, processed):
+    # extract input
+    # training set
+    input_node1_list = processed[0]
+    input_node2_list = processed[1]
+    actual_output_node1_list = processed[2]
+    actual_output_node2_list = processed[3]
+    # test set
+    test_input_node1_list = processed[4]
+    test_input_node2_list = processed[5]
+    test_actual_output_node1_list = processed[6]
+    test_actual_output_node2_list = processed[7]
     rms_train = []
     rms_test = []
     bestnode = []
@@ -259,10 +270,20 @@ def Node(epoch,nodes):
 
     return bestnode, rms_train, rms_test
 
-
-
 # Learning Rate function for finding fit Learing rate parameter
-def LearningRate(epoch, fnode):
+def LearningRate(epoch, fnode, processed):
+    # extract input
+    # training set
+    input_node1_list = processed[0]
+    input_node2_list = processed[1]
+    actual_output_node1_list = processed[2]
+    actual_output_node2_list = processed[3]
+    # test set
+    test_input_node1_list = processed[4]
+    test_input_node2_list = processed[5]
+    test_actual_output_node1_list = processed[6]
+    test_actual_output_node2_list = processed[7]
+
     rms_train = []
     rms_test = []
     mt = 0
@@ -290,7 +311,18 @@ def LearningRate(epoch, fnode):
 
 
 # Momentum function for finding fit momentum parameter
-def Momentum(epoch, fnode, flr):
+def Momentum(epoch, fnode, flr, processed):
+    # extract input
+    # training set
+    input_node1_list = processed[0]
+    input_node2_list = processed[1]
+    actual_output_node1_list = processed[2]
+    actual_output_node2_list = processed[3]
+    # test set
+    test_input_node1_list = processed[4]
+    test_input_node2_list = processed[5]
+    test_actual_output_node1_list = processed[6]
+    test_actual_output_node2_list = processed[7]
     rms_train = []
     rms_test = []
     MT = [0.05, 0.1, 0.15 , 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95] # list of LR considered
@@ -315,113 +347,6 @@ def Momentum(epoch, fnode, flr):
         rms_test.append(last_test_rms_per_ep) # rms per node test
         
     return rms_train, rms_test, MT
- 
-
-###############################Find best network number(bn)######################## 
-
-bn = Node(10,50)
-bestnode = bn[0]
-bn_rms_train = bn[1]
-bn_rms_test = bn[2]
-
-m_bn = min(bn_rms_test)
-bn_index = bn_rms_test.index(m_bn)
-FitNode = bestnode[bn_index]
-
-
-################################Find fit Learning Rate#############################
-
-Lr = LearningRate(10, FitNode)
-LR = Lr[2]
-lr_rms_train = Lr[0]
-lr_rms_test = Lr[1]
-
-m_lr = min(lr_rms_test)
-lr_index = lr_rms_test.index(m_lr)
-FitLr = LR[lr_index]
-
-################################Find fit Momentum##################################
-
-
-Mt = Momentum(10, FitNode, FitLr)
-MT = Mt[2]
-mt_rms_train = Mt[0]
-mt_rms_test = Mt[1]
-
-m_mt = min(mt_rms_test)
-mt_index = mt_rms_test.index(m_mt)
-FitMt = MT[mt_index]
-        
-################################Train and Test#####################################
-
-
-
-# Training
-Training = NeuralNetwork(200, FitLr, FitMt, FitNode, input_node1_list, input_node2_list, 
-                         actual_output_node1_list, actual_output_node2_list)
-
-train_rms_per_ep = Training[0]
-train_each_y_hat = Training[1]
-train_w_hid_ep = Training[2]
-train_w_out_ep = Training[3]
-
-
-
-# Testing
-Testing = TestNeural(200, FitLr, FitMt, FitNode, test_input_node1_list, test_input_node2_list, 
-                     test_actual_output_node1_list, test_actual_output_node2_list,
-                     train_w_hid_ep, train_w_out_ep, False)
-
-test_rms_per_ep = Testing
-
-m_test = min(test_rms_per_ep)
-test_index = test_rms_per_ep.index(m_test)
-
-# weight for rocket
-rocket_w_hid = train_w_hid_ep[test_index]
-rocket_w_out = train_w_out_ep[test_index]
-
-print("best Network num =", FitNode, "\n")
-print("best Learning Rate =", FitLr, "\n")
-print("best Momentum =", FitMt, "\n")
-
-############# use these weight into NeuralNetHolder.py file ##################
-print("Weight to hiddenLayer for Neural NetHolder is:\n",rocket_w_hid, "\n")
-print("Weight to outputLayer for Neural NetHolder is:\n",rocket_w_out, "\n")
-
-###### plot graph #######
-
-# importing libraries
-import matplotlib.pyplot as plt
-
-  
-figure, axis = plt.subplots(2, 2)
-  
-# For Network
-axis[0, 0].plot(bn_rms_train)
-axis[0, 0].plot(bn_rms_test)
-axis[0, 0].set_title("Network")
-  
-# For Learning Rate
-axis[0, 1].plot(lr_rms_train)
-axis[0, 1].plot(lr_rms_test)
-axis[0, 1].set_title("Learning Rate")
-  
-# For Momentum
-axis[1, 0].plot(mt_rms_train)
-axis[1, 0].plot(mt_rms_test)
-axis[1, 0].set_title("Momentum")
-  
-# For Train and Test Model
-axis[1, 1].plot(train_rms_per_ep)
-axis[1, 1].plot(test_rms_per_ep)
-axis[1, 1].set_title("Train and Test Model")
-
-# Combine all the operations and display
-plt.show()
-
-print("Final Model, data ce889_dataCollection.csv \n, 10 epoch of find each parameter \n,train 70% test 30%")
-
 
 
 
