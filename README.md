@@ -11,6 +11,16 @@ util.py Contain all function that use to find the best parameter of NeuralNetwor
 - LearningRate: funtion to find the best learning rate.
 - Momentum: function to find the best momentum.
 
+implement_train_test.py
+- this function will train model and get best parameter for the model (save weight to w_hid.csv, w_out.csv)
+- w_hid.csv: contain weight of hidden layer
+- w_out.csv: contain weight of output layer
+
+NeuralNetHolder.py
+- Foward propergation, this file will work with others game logic file in gamecode repo to make game play automatically.
+
 Result below
 
 https://github.com/TNONTANT/Neural-net-from-scratch-Lunar-landing/assets/103983840/015e3567-028b-498a-8e0a-38474bdc7d32
+
+PS: The code of this project quite messy because this is my first ML project
