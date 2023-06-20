@@ -19,6 +19,8 @@ implement_train_test.py
 NeuralNetHolder.py
 - Foward propergation, this file will work with others game logic file in gamecode repo to make game play automatically.
 
+all graph figure of this project are in presentation file (PDF) 
+
 Result below
 
 https://github.com/TNONTANT/Neural-net-from-scratch-Lunar-landing/assets/103983840/015e3567-028b-498a-8e0a-38474bdc7d32
