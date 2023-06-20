@@ -10,3 +10,5 @@ util.py Contain all function that use to find the best parameter of NeuralNetwor
 - Node: function to find the best fit number of neuron in hidden layer.
 - LearningRate: funtion to find the best learning rate.
 - Momentum: function to find the best momentum.
+
+https://github.com/TNONTANT/Neural-net-from-scratch-Lunar-landing/assets/103983840/015e3567-028b-498a-8e0a-38474bdc7d32
