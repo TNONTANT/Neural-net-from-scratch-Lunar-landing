@@ -19,7 +19,7 @@ implement_train_test.py
 NeuralNetHolder.py
 - Foward propergation, this file will work with others game logic file in gamecode repo to make game play automatically.
 
-all graph figure of this project are in presentation file (PDF) 
+all graph figure of this project are in individual_presentation.pdf
 
 Result below
 
