@@ -25,4 +25,3 @@ Result below
 
 https://github.com/TNONTANT/Neural-net-from-scratch-Lunar-landing/assets/103983840/015e3567-028b-498a-8e0a-38474bdc7d32
 
-PS: The code of this project quite messy because this is my first ML project
